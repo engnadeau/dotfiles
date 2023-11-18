@@ -1,0 +1,17 @@
+name: Test Dotfiles
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@v4
+
+    - name: Install Ansible
+      run: apt install ansible
+
+    - name: Run Ansible playbook
+      run: make sync
