@@ -1,0 +1,20 @@
+---
+- name: Manage Local Dotfiles
+  hosts: local
+  gather_facts: no
+  vars:
+    dotfiles_dir: "../dotfiles"  # Adjust the path according to your repo structure
+  tasks:
+    - name: Copy .profile to home directory
+      copy:
+        src: "{{ dotfiles_dir }}/.profile"
+        dest: "~/.profile"
+        mode: '0644'
+      become: false
+
+    - name: Copy .zshrc to home directory
+      copy:
+        src: "{{ dotfiles_dir }}/.zshrc"
+        dest: "~/.zshrc"
+        mode: '0644'
+      become: false
