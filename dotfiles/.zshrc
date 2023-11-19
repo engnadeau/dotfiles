@@ -131,3 +131,7 @@ fi
 if [ -d "$HOME/.local/bin" ] ; then
     PATH="$HOME/.local/bin:$PATH"
 fi
+
+# setup starship prompt
+# https://starship.rs/guide/#%F0%9F%9A%80-installation
+eval "$(starship init zsh)"
