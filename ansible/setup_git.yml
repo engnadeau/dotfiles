@@ -1,0 +1,52 @@
+---
+- name: Install GitHub CLI
+  hosts: localhost
+  become: yes
+  tasks:
+    - name: Ensure curl is installed
+      ansible.builtin.apt:
+        name: curl
+        state: present
+        update_cache: yes
+
+    - name: Add GitHub CLI GPG key
+      ansible.builtin.shell:
+        cmd: curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
+        args:
+          creates: /usr/share/keyrings/githubcli-archive-keyring.gpg
+
+    - name: Set permissions for GitHub CLI GPG key
+      ansible.builtin.file:
+        path: /usr/share/keyrings/githubcli-archive-keyring.gpg
+        mode: go+r
+
+    - name: Add GitHub CLI repository
+      ansible.builtin.apt_repository:
+        repo: deb [arch={{ ansible_architecture }} signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main
+        filename: github-cli
+
+    - name: Install GitHub CLI
+      ansible.builtin.apt:
+        name: gh
+        state: present
+        update_cache: yes
+
+- name: Install Commitizen CLI
+  hosts: localhost
+  become: no
+  tasks:
+    - name: Install Commitizen globally
+      ansible.builtin.npm:
+        name: commitizen
+        global: yes
+
+    - name: Install cz-conventional-changelog globally
+      ansible.builtin.npm:
+        name: cz-conventional-changelog
+        global: yes
+
+    - name: Create .czrc configuration file
+      ansible.builtin.copy:
+        content: '{ "path": "cz-conventional-changelog" }'
+        dest: "{{ ansible_env.HOME }}/.czrc"
+        mode: '0644'

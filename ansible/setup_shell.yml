@@ -1,0 +1,27 @@
+---
+- name: Setup Shell
+  hosts: localhost
+  become: yes
+  tasks:
+    - name: Install ZSH
+      ansible.builtin.apt:
+        name: zsh
+        state: present
+
+    - name: Install Oh-My-Zsh
+      ansible.builtin.shell:
+        cmd: sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+        creates: "~/.oh-my-zsh"
+      become_user: "{{ ansible_user_id }}"
+
+    - name: Clone alias-tips plugin
+      ansible.builtin.git:
+        repo: https://github.com/djui/alias-tips.git
+        dest: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/plugins/alias-tips"
+        version: master
+
+    - name: Clone zsh-autosuggestions plugin
+      ansible.builtin.git:
+        repo: https://github.com/zsh-users/zsh-autosuggestions.git
+        dest: "{{ ansible_env.HOME }}/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
+        version: master

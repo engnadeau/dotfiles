@@ -1,5 +1,5 @@
 ---
-- name: Manage Local Dotfiles
+- name: Sync Local Dotfiles
   hosts: local
   gather_facts: no
   vars:
