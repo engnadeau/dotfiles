@@ -1,4 +1,4 @@
-name: Test Dotfiles
+name: Test Playbook
 
 on:
   pull_request:
@@ -17,5 +17,5 @@ jobs:
     - name: Install Ansible
       run: sudo apt install ansible
 
-    - name: Run Ansible playbook
-      run: make sync
+    - name: Run Ansible playbooks
+      run: make all
