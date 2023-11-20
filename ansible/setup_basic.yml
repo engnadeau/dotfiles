@@ -1,0 +1,11 @@
+---
+- name: Install Basic Packages
+  hosts: localhost
+  become: yes
+  tasks:
+    - name: Install basic packages
+      ansible.builtin.apt:
+        name:
+          - make
+          - build-essential
+        state: present

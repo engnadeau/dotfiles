@@ -1,0 +1,20 @@
+---
+- name: Conditionally Install wslu for WSL
+  hosts: localhost
+  become: yes
+  tasks:
+    - name: Check if running in WSL
+      command: cat /proc/version
+      register: proc_version
+      ignore_errors: true
+
+    - name: Add wslu repository
+      ansible.builtin.apt_repository:
+        repo: ppa:wslutilities/wslu
+      when: "'microsoft' in proc_version.stdout | lower"
+
+    - name: Install wslu
+      ansible.builtin.apt:
+        name: wslu
+        state: present
+      when: "'microsoft' in proc_version.stdout | lower"
