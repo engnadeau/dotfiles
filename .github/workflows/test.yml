@@ -1,4 +1,4 @@
-name: Test Playbook
+name: Test Playbooks
 
 on:
   pull_request:
